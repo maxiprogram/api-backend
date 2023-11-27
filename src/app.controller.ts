@@ -1,10 +1,14 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get, HttpException, Post } from '@nestjs/common';
 import { AppService } from './app.service';
-import * as Nodemailer from 'nodemailer';
+import { SendMailService } from './send-mail-service/send-mail-service';
 
 @Controller('api')
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService,
+    private readonly sendMailService: SendMailService)
+    {
+
+    }
 
   @Get()
   index(): string {
@@ -12,32 +16,16 @@ export class AppController {
   }
 
   @Get('send-mail')
-  sendMail() {
-    // let transporter = Nodemailer.createTransport('gmail', {
-    //   auth: {
-    //     user: 'youremail@gmail.com',
-    //     pass: 'yourpassword'
-    //   }
-    // });
+  async sendMail() {
 
-    let transporter = Nodemailer.createTransport();
+    console.log('Start send-mail');
 
-    let mailOptions = {
-      from: 'youremail@gmail.com',
-      to: 'maxiprogram@gmail.com',
-      subject: 'Sending Email using Node.js',
-      text: 'That was easy!'
-    };
+    let result = await this.sendMailService.sendMail('test message');
+    //console.log(result);
+    
+    console.log('End send-mail');
 
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log('Email sent: ' + info.response);
-      }
-    });
-
-    return 'sendMail';
+    return {status: 'ok'};
   }
 
 }
