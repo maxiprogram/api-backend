@@ -2,6 +2,13 @@ import { Injectable } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
 
+export interface MailMessage {
+  username: string;
+  subject: string;
+  from: string;
+  textMessage: string;
+};
+
 @Injectable()
 export class SendMailService {
     private transporter: nodemailer.Transporter;
@@ -24,8 +31,9 @@ export class SendMailService {
       this.mailOptions.subject = 'Sending Email using Node.js';
     }
 
-    sendMail(textMessage: string) {
-      this.mailOptions.text = textMessage;
+    sendMail(mailMessage: MailMessage) {
+      this.mailOptions.subject = mailMessage.subject;
+      this.mailOptions.text = `Обратная связь\nОт: ${mailMessage.username} E-mail: ${mailMessage.from}\n\n${mailMessage.textMessage}`;
 
       return this.transporter.sendMail(this.mailOptions);
     }

@@ -1,6 +1,7 @@
-import { Controller, Get, HttpException, Post } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import { SendMailService } from './send-mail-service/send-mail-service';
+import { SendMailDto } from './dto/send-mail-dto';
 
 @Controller('api')
 export class AppController {
@@ -15,15 +16,16 @@ export class AppController {
     return 'This is API!';
   }
 
-  @Get('send-mail')
-  async sendMail() {
+  @Post('send-mail')
+  async sendMail(@Body() body: SendMailDto) {
 
-    console.log('Start send-mail');
+    Logger.log('Start send-mail', 'Route: send-mail');
+    Logger.log(body, 'BODY');
 
-    let result = await this.sendMailService.sendMail('test message');
+    let result = await this.sendMailService.sendMail(body);
     //console.log(result);
     
-    console.log('End send-mail');
+    Logger.log('End send-mail', 'Route: send-mail');
 
     return {status: 'ok'};
   }
