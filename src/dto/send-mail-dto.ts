@@ -16,4 +16,8 @@ export class SendMailDto {
     @IsString()
     @IsNotEmpty()
     textMessage: string;
+
+    @IsString()
+    @IsNotEmpty()
+    responseToken: string;
 }
