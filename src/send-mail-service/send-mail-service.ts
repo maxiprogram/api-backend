@@ -33,7 +33,7 @@ export class SendMailService {
 
     sendMail(mailMessage: MailMessage) {
       this.mailOptions.subject = mailMessage.subject;
-      this.mailOptions.text = `Обратная связь\nОт: ${mailMessage.username} E-mail: ${mailMessage.from}\n\n${mailMessage.textMessage}`;
+      this.mailOptions.text = `Обратная связь\nОт: ${mailMessage.username}\nE-mail: ${mailMessage.from}\n\n${mailMessage.textMessage}`;
 
       return this.transporter.sendMail(this.mailOptions);
     }
